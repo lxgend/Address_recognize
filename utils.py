@@ -1,0 +1,40 @@
+# coding=utf-8
+import pandas as pd
+
+from parms import *
+
+
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+
+def build_address_dict():
+    """"build dict files for jieba"""
+
+    files = ['province', 'city', 'area', 'street', 'village']
+
+    for i, f in enumerate(files, start=1):
+        df = pd.read_csv(os.path.join(PATH_DATA, f + '.csv'), dtype=object, encoding='utf-8')
+
+        # df = df.head()
+        df = df.filter(items=['name'])
+        df['name'] = df['name'].str.replace('居委会', '')
+        df['name'] = df['name'].str.replace('办事处', '')
+        df['feq'] = pow(10, i)
+        df['type'] = f
+
+        df.to_csv(os.path.join(PATH_DICT, f + '.txt'), header=False, index=False, sep=' ', encoding='utf-8')
+
+        print(f + ' dict  built !')
+
+# 需要基于banklist_norm
+def build_bank_dict():
+    df = pd.read_json(os.path.join(PATH_DATA, 'banks.json'), encoding='utf-8')
+
+    print(df['bank_name'].nunique())
+    print(df['bank_name'].unique())
+
+    # df.to_csv(os.path.join(PATH_DATA, 'banks_norm.csv'), index=False,  encoding='utf-8')
+
+
+if __name__ == '__main__':
+    build_address_dict()
