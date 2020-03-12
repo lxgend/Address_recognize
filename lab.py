@@ -1,18 +1,16 @@
 # coding=utf-8
 import pandas as pd
-import jieba.analyse
-import jieba.posseg as pseg
+
 from parms import *
 
+from sqlalchemy import create_engine
+
+engine= create_engine('sqlite:///'+PATH_DATA+'/data.sqlite')
+frame = pd.read_sql(COL_PROV, engine)
 
 
-
-tag_list = [COL_PROV, COL_CITY, COL_DIST, COL_ST, COL_VIL]
-
-for d in tag_list:
-    jieba.load_userdict(os.path.join(PATH_DICT, d + '.txt'))
+print(frame)
 
 
-
-
-print( pseg.cut('广东省深圳市龙岗区平湖'))
+# SELECT name FROM world
+# WHERE population >= 200000000

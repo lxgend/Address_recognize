@@ -14,8 +14,16 @@ def io_controller(df_input, col_input_raw):
 
 
 if __name__ == '__main__':
+    pd.set_option('display.max_columns', None)
+    pd.set_option('display.max_rows', None)
+
     df = pd.DataFrame([['东莞市中堂镇鹤田村']], columns = [COL_INPUT_RAW])
     df = io_controller(df, COL_INPUT_RAW)
+
+
+
+
+
     print(df)
 
 

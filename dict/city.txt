@@ -227,7 +227,6 @@
 三亚市 100 city
 三沙市 100 city
 儋州市 100 city
-县 100 city
 成都市 100 city
 自贡市 100 city
 攀枝花市 100 city

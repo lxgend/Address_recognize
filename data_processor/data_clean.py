@@ -14,11 +14,11 @@ def input_normalize(df, col_origin):
     return df, COL_INPUT_NORM
 
 
-def suffix_clean(df, col):
-    df[col] = df[col].str.replace('省', '')
-    df[col] = df[col].str.replace('壮族自治区', '')
-    df[col] = df[col].str.replace('回族自治区', '')
-    df[col] = df[col].str.replace('维吾尔自治区', '')
-    df[col] = df[col].str.replace('自治区', '')
-    df[col] = df[col].str.replace('特别行政区', '')
+def suffix_clean(df, col_raw, col_norm):
+    df[col_norm] = df[col_raw].str.replace('省', '')
+    df[col_norm] = df[col_norm].str.replace('壮族自治区', '')
+    df[col_norm] = df[col_norm].str.replace('回族自治区', '')
+    df[col_norm] = df[col_norm].str.replace('维吾尔自治区', '')
+    df[col_norm] = df[col_norm].str.replace('自治区', '')
+    df[col_norm] = df[col_norm].str.replace('特别行政区', '')
     return df

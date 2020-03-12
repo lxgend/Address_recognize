@@ -227,7 +227,6 @@
 三亚 99 city
 三沙 99 city
 儋州 99 city
-县 99 city
 成都 99 city
 自贡 99 city
 攀枝花 99 city
