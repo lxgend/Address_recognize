@@ -2,6 +2,7 @@
 import jieba.analyse
 import jieba.posseg as pseg
 
+
 from parms import *
 
 for d in os.listdir(PATH_DICT):
@@ -38,6 +39,6 @@ def extract_entity(df, col_norm):
 
         df = df.drop([col_entity_idx], axis=1)
 
-    # df = df.drop([col_cut], axis=1)
+    df = df.drop([col_cut, col_cut_flag], axis=1)
 
     return df

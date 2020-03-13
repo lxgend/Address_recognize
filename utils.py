@@ -69,7 +69,6 @@ def build_address_dict():
 
 
 def build_norm_address_table():
-
     tag = [COL_PROV, COL_CITY]
 
     for i, f in enumerate(tag, start=1):
@@ -93,7 +92,6 @@ def build_norm_address_table():
         for w in drop_word:
             df = df[df[COL_NM] != w]
 
-
         df[COL_NM_NORM] = df[COL_NM].str.replace('居民委员会', '')
         df[COL_NM_NORM] = df[COL_NM_NORM].str.replace('民委员会', '')  # 留下村
         df[COL_NM_NORM] = df[COL_NM_NORM].str.replace('居委会', '')
@@ -104,6 +102,43 @@ def build_norm_address_table():
         print(f + '_norm csv built !')
 
 
+def build_location_map():
+    df_prov = pd.read_csv(os.path.join(PATH_DATA, COL_PROV + '_norm.csv'), dtype=object, encoding='utf-8')
+    df_city = pd.read_csv(os.path.join(PATH_DATA, COL_CITY + '_norm.csv'), dtype=object, encoding='utf-8')
+    df_dist = pd.read_csv(os.path.join(PATH_DATA, COL_DIST + '_norm.csv'), dtype=object, encoding='utf-8')
+    df_st = pd.read_csv(os.path.join(PATH_DATA, COL_ST + '_norm.csv'), dtype=object, encoding='utf-8')
+    df_vil = pd.read_csv(os.path.join(PATH_DATA, COL_VIL + '_norm.csv'), dtype=object, encoding='utf-8')
+
+    df_prov = df_prov.rename(columns={COL_NM: COL_PROV, COL_NM_NORM: COL_PROV + '_norm'})
+    df_city = df_city.rename(columns={COL_NM: COL_CITY, COL_NM_NORM: COL_CITY + '_norm'})
+    df_dist = df_dist.rename(columns={COL_NM: COL_DIST, COL_NM_NORM: COL_DIST + '_norm'})
+    df_st = df_st.rename(columns={COL_NM: COL_ST, COL_NM_NORM: COL_ST + '_norm'})
+    df_vil = df_vil.rename(columns={COL_NM: COL_VIL, COL_NM_NORM: COL_VIL + '_norm'})
+
+    df_vil[COL_PROV] = df_vil['provinceCode'].map(df_prov.set_index('code')[COL_PROV])
+    df_vil[COL_PROV + '_norm'] = df_vil['provinceCode'].map(df_prov.set_index('code')[COL_PROV + '_norm'])
+
+    df_vil[COL_CITY] = df_vil['cityCode'].map(df_city.set_index('code')[COL_CITY])
+    df_vil[COL_CITY + '_norm'] = df_vil['cityCode'].map(df_city.set_index('code')[COL_CITY + '_norm'])
+
+    df_vil[COL_DIST] = df_vil['areaCode'].map(df_dist.set_index('code')[COL_DIST])
+    df_vil[COL_DIST + '_norm'] = df_vil['areaCode'].map(df_dist.set_index('code')[COL_DIST + '_norm'])
+
+    df_vil[COL_ST] = df_vil['streetCode'].map(df_st.set_index('code')[COL_ST])
+    df_vil[COL_ST + '_norm'] = df_vil['streetCode'].map(df_st.set_index('code')[COL_ST + '_norm'])
+
+    cols = [COL_PROV, COL_PROV + '_norm', COL_CITY, COL_CITY + '_norm', COL_DIST, COL_DIST + '_norm', COL_ST,
+            COL_ST + '_norm', COL_VIL, COL_VIL + '_norm']
+
+    df_vil = df_vil.filter(items=cols)
+
+    df_vil[COL_CITY] = df_vil[COL_CITY].fillna(df_vil[COL_PROV])
+    df_vil[COL_CITY + '_norm'] = df_vil[COL_CITY + '_norm'].fillna(df_vil[COL_PROV + '_norm'])
+
+    df_vil.to_csv(os.path.join(PATH_DATA, 'location_map.csv'), index=False, encoding='utf-8')
+
+
 if __name__ == '__main__':
-    build_address_dict()
-    build_norm_address_table()
+    # build_address_dict()
+    # build_norm_address_table()
+    build_location_map()

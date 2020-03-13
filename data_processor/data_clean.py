@@ -1,6 +1,6 @@
 # coding=utf-8
 import unicodedata
-
+import numpy as np
 from parms import *
 
 
@@ -21,4 +21,19 @@ def suffix_clean(df, col_raw, col_norm):
     df[col_norm] = df[col_norm].str.replace('维吾尔自治区', '')
     df[col_norm] = df[col_norm].str.replace('自治区', '')
     df[col_norm] = df[col_norm].str.replace('特别行政区', '')
+    return df
+
+
+def cols_norm(df, cols):
+
+    cols_input = df.columns.tolist()
+
+    for col in cols:
+        if col in cols_input:
+            df[col] = df[col].replace('', np.nan)
+            df[col] = df[col].fillna(UNK)
+        else:
+            df[col] = UNK
+
+        df[col] = df[col].fillna(UNK)
     return df
