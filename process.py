@@ -1,6 +1,7 @@
 # coding=utf-8
-import pandas as pd
 import jieba
+import pandas as pd
+
 from data_processor.data_clean import input_normalize
 from extract.complement import complement_stgy
 from extract.tokenizer import extract_entity
@@ -29,7 +30,14 @@ if __name__ == '__main__':
     pd.set_option('display.max_columns', None)
     pd.set_option('display.max_rows', None)
 
+    txt1 = '玉山镇朝阳西路168号'
+
     df = pd.DataFrame([['中山市中堂镇鹤田村']], columns=[COL_INPUT_RAW])
     df = io_controller(df, COL_INPUT_RAW)
 
-    print(df)
+    logger.debug(df)
+
+
+
+
+
